@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
     <title>Greedometer</title>
 </head>
 <body>
@@ -52,7 +56,70 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ante diam, ultrices a gravida a, congue at velit. In tortor nunc, vestibulum vitae gravida id, eleifend at orci. Integer ipsum neque, pretium ut rhoncus non, volutpat nec purus. Fusce dapibus est et ante pretium elementum. Donec nec maximus diam. Ut ac erat augue. See more...</p>
         </div>
 
-
+        
     </main>
+
+    <script>
+        d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv', function(err, rows) {
+            if (err) console.error('Error loading CSV:', err);
+            function unpack(rows, key) { return rows.map(function(row) { return row[key]; }); }
+            
+            let trace1 = {
+                type: 'scatter',
+                mode: 'lines',
+                name: 'AAPL High',
+                x: unpack(rows, 'Date'),
+                y: unpack(rows, 'AAPL.High'),
+                line: {color: '#17BECF'}
+            }
+
+            let trace2 = {
+                type: 'scatter',
+                mode: 'lines',
+                name: 'AAPL Low',
+                x: unpack(rows, 'Date'),
+                y: unpack(rows, 'AAPL.Low'),
+                line: {color: '#7F7F7F'}
+            }
+
+            let data = [trace1, trace2];
+
+            let layout = {
+                title: 'Time Series with Rangeslider',
+                xaxis: {
+                    autorange: true,
+                    range: ['2015-07-01', '2017-12-31'],
+                    rangeselector: { buttons: [
+                        {
+                            count: 1,
+                            label: '1m',
+                            step: 'month'
+                        },
+                        {
+                            count: 6,
+                            label: '6m',
+                            step: 'month'
+                        },
+                        {step: 'all'}
+                    ]},
+                    rangeslider: {range: ['2015-02-17', '2017-02-16']},
+                    type: 'date'
+                },
+                yaxis: {
+                    autorange: true,
+                    range: [86.8700008333, 138.870004167],
+                    type: 'linear'
+                },
+                height: 500
+            };
+
+            let config = {
+                responsive: true,
+                displaylogo: false
+            }
+
+            Plotly.newPlot('chart', data, layout, config);
+        });
+    </script>
 </body>
 </html>
