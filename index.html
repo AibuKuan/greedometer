@@ -9,6 +9,9 @@
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <!-- Plotly -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <title>Greedometer</title>
 </head>
 <body>
@@ -21,21 +24,28 @@
                 <a href="#"><li>Forex</li></a>
             </ul>
         </nav>
-        <form>
-            <input type="text" placeholder="Search ticker symbol">
-            <button>Search</button>
+        <form action="index.html" method="GET">
+            <div class="search-container">
+                <input id="searchbar" class="search" type="text" name="symbol" placeholder="Search ticker symbol" autocomplete="off">
+                <button class="material-symbols-outlined">search</button>
+                
+                
+            </div>
+            <div class="recom">
+                
+            </div>
         </form>
     </header>
     <main>
         <div>
             <h2>Company Name</h2>
-            <span>Apple Inc. Common Stock (AAPL)</span>
+            <span class="comp-var" id="comp-name">Apple Inc. Common Stock (AAPL)</span>
             <h2>Market Capitalization</h2>
-            <span>$1,000,000,000</span>
+            <span class="comp-var" id="market-cap">$1,000,000,000</span>
             <h2>Latest Price</h2>
-            <span>$1,000</span>
+            <span class="comp-var" id="price">$1,000</span>
             <h2>Price Change</h2>
-            <span>+$500 (+100%)</span>
+            <span class="comp-var" id="price-change">+$500 (+100%)</span>
         </div>
         <div>
             <form action="">
@@ -59,6 +69,7 @@
         
     </main>
 
+    <script src="script.js"></script>
     <script>
         d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv', function(err, rows) {
             if (err) console.error('Error loading CSV:', err);
