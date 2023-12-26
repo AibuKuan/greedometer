@@ -24,7 +24,7 @@
                 <a href="#"><li>Forex</li></a>
             </ul>
         </nav>
-        <form action="index.html" method="GET">
+        <form id="searchbar-form">
             <div class="search-container">
                 <input id="searchbar" class="search" type="text" name="symbol" placeholder="Search ticker symbol" autocomplete="off">
                 <button class="material-symbols-outlined">search</button>
@@ -121,7 +121,8 @@
                     range: [86.8700008333, 138.870004167],
                     type: 'linear'
                 },
-                height: 500
+                height: 500,
+                // plot_bgcolor: '#1b263b'
             };
 
             let config = {
