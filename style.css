@@ -162,7 +162,6 @@ input#searchbar:hover {
 input#searchbar:focus {
     border: none;
     outline: none;
-    width: 500px;
 }
 
 /* Main */
@@ -202,4 +201,77 @@ div.chart-type-button button {
 div.chart-container {
     overflow: auto;
     box-shadow: 0px 0px 2px 1px black;
+}
+
+@media screen and (min-width: 768px) {
+    body {
+        font-size: 1rem;
+        padding: 12px 35px
+    }
+    
+    /* Header */
+    header {
+        margin-bottom: 50px;
+    }
+
+    h1 span {
+        font-size: 2rem;
+    }
+
+    nav {
+        margin: 32px 0;
+    }
+
+    nav ul {
+        gap: 127px;
+    }
+
+    /* Searchbar */
+    form div {
+        width: 150px;
+    }
+
+    form div.active {
+        width: 300px;
+        margin-left: calc(50% - 150px);
+    }
+
+    form div input {
+        font-size: 1rem;
+    }
+
+    .search-container,
+    .recom {
+        margin-left: calc(50% - 75px);
+    }
+
+    .recom {
+        margin-top: 2rem;
+    }
+
+    /* Main */
+    h2 {
+        font-size: 1rem;
+    }
+
+    span#comp-name {
+        font-size: 2rem;
+    }
+
+    span.comp-var {
+        font-size: 1.5rem;
+        margin-left: .5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Chart */
+    div.chart-type-button {
+        gap: 75px;
+        margin-left: 1rem;
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (min-width: 1366px) {
+    
 }
