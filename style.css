@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 
 :root {
@@ -11,13 +11,17 @@
 
 * {
     box-sizing: border-box;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    padding: 0 10rem;
+    font-size: .75rem;
     background-color: var(--dark-color);
     color: var(--light-color);
+    margin: 0;
+    padding: 12px;
 }
 
 a {
@@ -25,20 +29,40 @@ a {
     color: var(--light-color);
 }
 
-/* Navbar */
+/* Header */
+header {
+    margin-bottom: 40px;
+}
+
 h1 {
     text-align: center;
+    font-weight: 200;
+    margin: 0;
+}
+
+h1 span {
+    font-size: 1.5rem;
+}
+
+span.greed {
+    font-weight: 600;
+}
+
+span.ometer {
+    font-weight: 200;
 }
 
 nav {
     display: flex;
     justify-content: center;
+    margin: 12px 0;
 }
 
 nav ul {
     display: flex;
     padding: 0;
-    gap: 5rem;
+    gap: 70px;
+    margin: 0;
 }
 
 nav ul a {
@@ -47,12 +71,13 @@ nav ul a {
 
 nav ul li {
     list-style-type: none;
+    font-weight: 400;
 }
 
 /* Searchbar */
 header form {
     position: relative;
-    margin-bottom: 80px;
+    height: 40px;
 }
 
 form div {
@@ -60,14 +85,23 @@ form div {
     display: flex;
     border: none;
     margin: 0 auto;
-    width: 300px;
+    width: 120px;
     background: white;
 }
 
+form div.active {
+    width: 250px;
+    margin-left: calc(50% - 125px);
+}
+
 .search-container {
-    margin-left: calc(50% - 150px);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+}
+
+.search-container,
+.recom {
+    margin-left: calc(50% - 60px);
     transition: width .5s, margin-left .5s;
 }
 
@@ -95,14 +129,7 @@ form div button:hover {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     padding-bottom: 6px;
-    margin-left: calc(50% - 150px);
-    margin-top: 2.5rem;
-    transition: width .5s, margin-left .5s;
-}
-
-.wide-searchbar {
-    width: 500px;
-    margin-left: calc(50% - 250px);
+    margin-top: 1.75rem;
 }
 
 .search {
@@ -119,14 +146,12 @@ form div button:hover {
 }
 
 input#searchbar {
-    height: 2.5rem;
-    font-size: 1rem;
-    font-weight: 600;
+    padding: .25rem;
+    font-weight: 400;
     color: var(--background-color);
 }
 
 input#searchbar::placeholder {
-    font-size: 1rem;
     font-weight: 400;
 }
 
@@ -142,15 +167,39 @@ input#searchbar:focus {
 
 /* Main */
 h2 {
-    font-size: 0.9rem;
+    font-size: .75rem;
+    font-weight: 400;
 }
 
 span#comp-name {
-    font-size: 2rem;
+    font-size: 1.25rem;
+    margin-left: 0;
 }
 
 span.comp-var {
     display: inline-block;
-    font-size: 1.5rem;
+    font-size: 1rem;
+    margin-left: .25rem;
     margin-bottom: 1rem;
+}
+
+/* Chart */
+div.chart-type-button {
+    display: flex;
+    gap: 30px;
+    margin-left: .25rem;
+    margin-bottom: 10px;
+}
+
+div.chart-type-button button {
+    background: white;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    padding: 0 10px;
+}
+
+div.chart-container {
+    overflow: auto;
+    box-shadow: 0px 0px 2px 1px black;
 }

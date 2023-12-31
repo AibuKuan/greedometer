@@ -16,7 +16,7 @@
 </head>
 <body>
     <header>
-        <h1>GREEDOMETER</h1>
+        <h1><span class="greed">GREED</span><span clas="ometer">ometer</span></h1>
         <nav>
             <ul>
                 <a href="#"><li>Stocks</li></a>
@@ -26,7 +26,7 @@
         </nav>
         <form id="searchbar-form">
             <div class="search-container">
-                <input id="searchbar" class="search" type="text" name="symbol" placeholder="Search ticker symbol" autocomplete="off">
+                <input id="searchbar" class="search" type="text" name="symbol" placeholder="Search" autocomplete="off">
                 <button class="material-symbols-outlined">search</button>
                 
                 
@@ -38,34 +38,23 @@
     </header>
     <main>
         <div>
-            <h2>Company Name</h2>
             <span class="comp-var" id="comp-name">Apple Inc. Common Stock (AAPL)</span>
-            <h2>Market Capitalization</h2>
+            <h2>Market Cap</h2>
             <span class="comp-var" id="market-cap">$1,000,000,000</span>
-            <h2>Latest Price</h2>
+            <h2>Current Price</h2>
             <span class="comp-var" id="price">$1,000</span>
-            <h2>Price Change</h2>
+            <h2>Price Change Today</h2>
             <span class="comp-var" id="price-change">+$500 (+100%)</span>
         </div>
         <div>
-            <form action="">
-                <label for="">Timeframe</label>
-                <select name="timeframe" id="timeframe">
-                    <option value="live">Real Time</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                    <option value="all">All Time</option>
-                </select>
-            </form>
-            <div id="chart"></div>
+            <div class="chart-type-button">
+                <button class="timeseries">Time Series</button>
+                <button class="candlestick">Candlestick</button>
+            </div>
+            <div class="chart-container">
+                <div id="chart" style="min-width: 500px"></div>
+            </div>
         </div>
-        <div>
-            <h2>Company Description</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ante diam, ultrices a gravida a, congue at velit. In tortor nunc, vestibulum vitae gravida id, eleifend at orci. Integer ipsum neque, pretium ut rhoncus non, volutpat nec purus. Fusce dapibus est et ante pretium elementum. Donec nec maximus diam. Ut ac erat augue. See more...</p>
-        </div>
-
         
     </main>
 
@@ -81,7 +70,7 @@
                 name: 'AAPL High',
                 x: unpack(rows, 'Date'),
                 y: unpack(rows, 'AAPL.High'),
-                line: {color: '#17BECF'}
+                line: {color: 'green'}
             }
 
             let trace2 = {
@@ -90,17 +79,25 @@
                 name: 'AAPL Low',
                 x: unpack(rows, 'Date'),
                 y: unpack(rows, 'AAPL.Low'),
-                line: {color: '#7F7F7F'}
+                line: {color: 'red'}
             }
 
             let data = [trace1, trace2];
 
             let layout = {
                 title: 'Time Series with Rangeslider',
+                titlefont: {
+                    color: 'hsl(0, 0%, 90%)'
+                },
                 xaxis: {
                     autorange: true,
                     range: ['2015-07-01', '2017-12-31'],
                     rangeselector: { buttons: [
+                        {
+                            count: 7,
+                            label: '1w',
+                            step: 'day'
+                        },
                         {
                             count: 1,
                             label: '1m',
@@ -114,20 +111,39 @@
                         {step: 'all'}
                     ]},
                     rangeslider: {range: ['2015-02-17', '2017-02-16']},
-                    type: 'date'
+                    type: 'date',
+                    gridcolor: 'hsl(0, 0%, 50%)',
+                    minorgridcolor: 'hsl(0, 0%, 50%)',
+                    tickfont: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
                 },
                 yaxis: {
                     autorange: true,
                     range: [86.8700008333, 138.870004167],
-                    type: 'linear'
+                    type: 'linear',
+                    gridcolor: 'hsl(0, 0%, 50%)',
+                    minorgridcolor: 'hsl(0, 0%, 50%)',
+                    tickfont: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
                 },
-                height: 500,
+                legend: {
+                    font: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
+                },
+                autosize: true,
+                plot_bgcolor: 'hsl(0, 0%, 10%)',
+                paper_bgcolor: 'hsl(0, 0%, 10%)',
+                dragmode: 'pan'
                 // plot_bgcolor: '#1b263b'
             };
 
             let config = {
                 responsive: true,
-                displaylogo: false
+                displaylogo: false,
+                modeBarButtonsToRemove: ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'toImage']
             }
 
             Plotly.newPlot('chart', data, layout, config);

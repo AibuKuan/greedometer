@@ -3,6 +3,9 @@
 // });
 
 $('#searchbar').on('focus', function() {
+    $('form div').addClass('active');
+    
+    $('#searchbar').attr('placeholder', 'Search ticker symbol');
     const recom1 = $('<div></div>');
     const recom2 = $('<div></div>');
 
@@ -15,14 +18,13 @@ $('#searchbar').on('focus', function() {
     $('.recom').append(recom1);
     $('.recom').append(recom2);
 
-    $('.search-container').addClass('wide-searchbar');
-    $('.recom').addClass('wide-searchbar');
+    
 });
 
 $('#searchbar').on('blur', function() {
+    $('#searchbar').attr('placeholder', 'Search');
     $('.recom').empty();
-    $('.search-container').removeClass('wide-searchbar');
-    $('.recom').removeClass('wide-searchbar');
+    $('form div').removeClass('active');
 });
 
 $('#searchbar-form').on('submit', function(event) {
