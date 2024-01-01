@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <title>Stocks - Greedometer</title>
+</head>
+<body>
+    <header>
+        <div class="h1-nav">
+            <h1><span class="greed">GREED</span><span clas="ometer">ometer</span></h1>
+            <nav>
+                <ul>
+                    <a href="#"><li>Stocks</li></a>
+                    <a href="#"><li>Crypto</li></a>
+                    <a href="#"><li>Forex</li></a>
+                </ul>
+            </nav>
+        </div>
+        <form id="searchbar-form">
+            <div class="searchbar-container">
+                <div class="search-container">
+                    <input id="searchbar" class="search" type="text" name="symbol" placeholder="Search" autocomplete="off">
+                    <button class="material-symbols-outlined">search</button>
+                    
+                    
+                </div>
+                <div class="recom">
+                    
+                </div>
+            </div>
+        </form>
+    </header>
+    <main>
+        <div>
+            <span class="comp-var" id="comp-name">Apple Inc. Common Stock (AAPL)</span>
+            <h2>Market Cap</h2>
+            <span class="comp-var" id="market-cap">$1,000,000,000</span>
+            <h2>Current Price</h2>
+            <span class="comp-var" id="price">$1,000</span>
+            <h2>Price Change Today</h2>
+            <span class="comp-var" id="price-change">+$500 (+100%)</span>
+        </div>
+        <div>
+            <div class="chart-type-button">
+                <button class="timeseries">Time Series</button>
+                <button class="candlestick">Candlestick</button>
+            </div>
+            <div class="chart-container">
+                <div id="chart" style="min-width: 500px"></div>
+            </div>
+        </div>
+        
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv', function(err, rows) {
+            if (err) console.error('Error loading CSV:', err);
+            function unpack(rows, key) { return rows.map(function(row) { return row[key]; }); }
+            
+            let trace1 = {
+                type: 'scatter',
+                mode: 'lines',
+                name: 'AAPL High',
+                x: unpack(rows, 'Date'),
+                y: unpack(rows, 'AAPL.High'),
+                line: {color: 'rgb(51, 166, 159)'}
+            }
+
+            let trace2 = {
+                type: 'scatter',
+                mode: 'lines',
+                name: 'AAPL Low',
+                x: unpack(rows, 'Date'),
+                y: unpack(rows, 'AAPL.Low'),
+                line: {color: 'rgb(234, 89, 81)'}
+            }
+
+            let data = [trace1, trace2];
+
+            let layout = {
+                title: 'Time Series with Rangeslider',
+                titlefont: {
+                    color: 'hsl(0, 0%, 90%)'
+                },
+                xaxis: {
+                    autorange: true,
+                    range: ['2015-07-01', '2017-12-31'],
+                    rangeselector: { buttons: [
+                        {
+                            count: 7,
+                            label: '1w',
+                            step: 'day'
+                        },
+                        {
+                            count: 1,
+                            label: '1m',
+                            step: 'month'
+                        },
+                        {
+                            count: 6,
+                            label: '6m',
+                            step: 'month'
+                        },
+                        {step: 'all'}
+                    ]},
+                    rangeslider: {range: ['2015-02-17', '2017-02-16']},
+                    type: 'date',
+                    gridcolor: 'hsl(0, 0%, 50%)',
+                    minorgridcolor: 'hsl(0, 0%, 50%)',
+                    tickfont: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
+                },
+                yaxis: {
+                    autorange: true,
+                    range: [86.8700008333, 138.870004167],
+                    type: 'linear',
+                    gridcolor: 'hsl(0, 0%, 50%)',
+                    minorgridcolor: 'hsl(0, 0%, 50%)',
+                    tickfont: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
+                },
+                legend: {
+                    font: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
+                },
+                autosize: true,
+                plot_bgcolor: 'hsl(0, 0%, 10%)',
+                paper_bgcolor: 'hsl(0, 0%, 10%)',
+                dragmode: 'pan'
+                // plot_bgcolor: '#1b263b'
+            };
+
+            let config = {
+                responsive: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'toImage']
+            }
+
+            Plotly.newPlot('chart', data, layout, config);
+        });
+    </script>
+</body>
+</html>
