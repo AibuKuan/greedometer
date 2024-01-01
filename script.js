@@ -101,7 +101,7 @@ function loadChart(symbol) {
     const settings = {
         async: true,
         crossDomain: true,
-        url: `https://yahoo-finance127.p.rapidapi.com/historic/${symbol}/1d/3mo`,
+        url: `https://yahoo-finance127.p.rapidapi.com/historic/${symbol}/1d/3y`,
         method: 'GET',
         headers: {
             'X-RapidAPI-Key': 'eae20b108bmsh050c0ab157af07dp151d0cjsnf5efc3f2615f',
@@ -148,7 +148,7 @@ function loadChart(symbol) {
                 name: `${response['meta']['symbol']} High`,
                 x: convTime(response['timestamp']),
                 y: convPrices(response['indicators']['quote'][0]['high']),
-                line: {color: '#17BECF'}
+                line: {color: 'rgb(51, 166, 159)'}
             }
 
             let low = {
@@ -157,23 +157,65 @@ function loadChart(symbol) {
                 name: `${response['meta']['symbol']} Low`,
                 x: convTime(response['timestamp']),
                 y: convPrices(response['indicators']['quote'][0]['low']),
-                line: {color: '#7F7F7F'}
+                line: {color: 'rgb(234, 89, 81)'}
             }
 
             let layout = {
                 title: `${response['meta']['symbol']} Price`,
+                titlefont: {
+                    color: 'hsl(0, 0%, 90%)'
+                },
                 xaxis: {
                     autorange: true,
                     range: minMaxDate(response['timestamp']),
+                    rangeselector: { buttons: [
+                        {
+                            count: 7,
+                            label: '1w',
+                            step: 'day'
+                        },
+                        {
+                            count: 1,
+                            label: '1m',
+                            step: 'month'
+                        },
+                        {
+                            count: 6,
+                            label: '6m',
+                            step: 'month'
+                        },
+                        {step: 'all'}
+                    ]},
                     rangeslider: {range: minMaxDate(response['timestamp'])},
-                    type: 'date'
+                    type: 'date',
+                    gridcolor: 'hsl(0, 0%, 50%)',
+                    minorgridcolor: 'hsl(0, 0%, 50%)',
+                    tickfont: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
                 },
-                height: 500
+                yaxis: {
+                    gridcolor: 'hsl(0, 0%, 50%)',
+                    minorgridcolor: 'hsl(0, 0%, 50%)',
+                    tickfont: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
+                },
+                legend: {
+                    font: {
+                        color: 'hsl(0, 0%, 90%)'
+                    }
+                },
+                autosize: true,
+                plot_bgcolor: 'hsl(0, 0%, 10%)',
+                paper_bgcolor: 'hsl(0, 0%, 10%)',
+                dragmode: 'pan'
             }
 
             let config = {
                 responsive: true,
-                displaylogo: false
+                displaylogo: false,
+                modeBarButtonsToRemove: ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'toImage']
             }
 
             let data = [high, low];
@@ -194,3 +236,92 @@ function loadChart(symbol) {
 
 
 
+
+// d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv', function(err, rows) {
+//             if (err) console.error('Error loading CSV:', err);
+//             function unpack(rows, key) { return rows.map(function(row) { return row[key]; }); }
+            
+//             let trace1 = {
+//                 type: 'scatter',
+//                 mode: 'lines',
+//                 name: 'AAPL High',
+//                 x: unpack(rows, 'Date'),
+//                 y: unpack(rows, 'AAPL.High'),
+//                 line: {color: 'green'}
+//             }
+
+//             let trace2 = {
+//                 type: 'scatter',
+//                 mode: 'lines',
+//                 name: 'AAPL Low',
+//                 x: unpack(rows, 'Date'),
+//                 y: unpack(rows, 'AAPL.Low'),
+//                 line: {color: 'red'}
+//             }
+
+//             let data = [trace1, trace2];
+
+//             let layout = {
+//                 title: 'Time Series with Rangeslider',
+//                 titlefont: {
+//                     color: 'hsl(0, 0%, 90%)'
+//                 },
+//                 xaxis: {
+//                     autorange: true,
+//                     range: ['2015-07-01', '2017-12-31'],
+//                     rangeselector: { buttons: [
+//                         {
+//                             count: 7,
+//                             label: '1w',
+//                             step: 'day'
+//                         },
+//                         {
+//                             count: 1,
+//                             label: '1m',
+//                             step: 'month'
+//                         },
+//                         {
+//                             count: 6,
+//                             label: '6m',
+//                             step: 'month'
+//                         },
+//                         {step: 'all'}
+//                     ]},
+//                     rangeslider: {range: ['2015-02-17', '2017-02-16']},
+//                     type: 'date',
+//                     gridcolor: 'hsl(0, 0%, 50%)',
+//                     minorgridcolor: 'hsl(0, 0%, 50%)',
+//                     tickfont: {
+//                         color: 'hsl(0, 0%, 90%)'
+//                     }
+//                 },
+//                 yaxis: {
+//                     autorange: true,
+//                     range: [86.8700008333, 138.870004167],
+//                     type: 'linear',
+//                     gridcolor: 'hsl(0, 0%, 50%)',
+//                     minorgridcolor: 'hsl(0, 0%, 50%)',
+//                     tickfont: {
+//                         color: 'hsl(0, 0%, 90%)'
+//                     }
+//                 },
+//                 legend: {
+//                     font: {
+//                         color: 'hsl(0, 0%, 90%)'
+//                     }
+//                 },
+//                 autosize: true,
+//                 plot_bgcolor: 'hsl(0, 0%, 10%)',
+//                 paper_bgcolor: 'hsl(0, 0%, 10%)',
+//                 dragmode: 'pan'
+//                 // plot_bgcolor: '#1b263b'
+//             };
+
+//             let config = {
+//                 responsive: true,
+//                 displaylogo: false,
+//                 modeBarButtonsToRemove: ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'toImage']
+//             }
+
+//             Plotly.newPlot('chart', data, layout, config);
+//         });
