@@ -100,7 +100,8 @@ form div.active {
 }
 
 .search-container,
-.recom {
+.recom,
+.searchbar-container {
     margin-left: calc(50% - 60px);
     transition: width .5s, margin-left .5s;
 }
@@ -273,5 +274,52 @@ div.chart-container {
 }
 
 @media screen and (min-width: 1366px) {
+    body {
+        padding: 12px 70px
+    }
+
+    /* Header */
+    div.h1-nav {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 30px 0 0;
+    }
+
+    h1 {
+        display: flex;
+        align-items: center;
+    }
+
+    div.searchbar-container {
+        margin-left: 0;
+        left: 20px;
+    }
+
+    /* Searchbar */
+    form div.active,
+    .search-container,
+    .recom {
+        margin-left: 0;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    /* Header */
+    header {
+        margin-bottom: 150px;
+    }
+
+    /* Searchbar */
+    form div.searchbar-container {
+        left: 350px;
+        top: -60px;
+    }
+
+    /* Main */
+    main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
     
 }
