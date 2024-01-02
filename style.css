@@ -25,6 +25,7 @@ body {
 }
 
 a {
+    text-decoration: none;
     font-weight: 600;
     color: var(--light-color);
 }
@@ -166,6 +167,67 @@ input#searchbar:focus {
 }
 
 /* Main */
+/* Index */
+div.nav-img {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+}
+
+div.nav-img img {
+    width: 90px;
+    height: 60px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px 0px black;
+    filter: brightness(65%);
+    transition: filter 0.1s;
+}
+
+.img-active {
+    filter: brightness(100%) !important; 
+}
+
+h2.intro {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+caption {
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+th, td {
+    line-height: 2rem;
+    border-bottom: 1px solid gray;
+}
+
+tr:hover {
+    background: darkgreen;
+}
+
+
+/* Stocks */
+#stocks-container,
+#crypto-container,
+#forex-container {
+    position: relative;
+    height: 60px;
+}
+
+.nav-img h2 {
+    position: absolute;
+    left: 24px;
+    top: 24px;
+}
+
 h2 {
     font-size: .75rem;
     font-weight: 400;
