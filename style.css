@@ -174,13 +174,28 @@ div.nav-img {
     margin-bottom: 40px;
 }
 
+#stocks-container,
+#crypto-container,
+#forex-container {
+    position: relative;
+    height: 18vw;
+}
+
 div.nav-img img {
-    width: 90px;
-    height: 60px;
+    width: 27vw;
+    height: 18vw;
     border-radius: 4px;
     box-shadow: 0px 0px 4px 0px black;
     filter: brightness(65%);
     transition: filter 0.1s;
+}
+
+.nav-img h2 {
+    position: absolute;
+    width: 70px;
+    text-align: center;
+    left: calc(13.5vw - 35px);
+    top: 8vw;
 }
 
 .img-active {
@@ -196,6 +211,7 @@ h2.intro {
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 40px;
 }
 
 caption {
@@ -215,19 +231,6 @@ tr:hover {
 
 
 /* Stocks */
-#stocks-container,
-#crypto-container,
-#forex-container {
-    position: relative;
-    height: 60px;
-}
-
-.nav-img h2 {
-    position: absolute;
-    left: 24px;
-    top: 24px;
-}
-
 h2 {
     font-size: .75rem;
     font-weight: 400;
@@ -313,6 +316,12 @@ div.chart-container {
     }
 
     /* Main */
+    /* Index */
+    .nav-img h2 {
+        font-size: 1.25rem;
+    }
+
+    /* Stocks */
     h2 {
         font-size: 1rem;
     }
@@ -363,6 +372,24 @@ div.chart-container {
     .recom {
         margin-left: 0;
     }
+
+    /* Main */
+    /* Index */
+    .nav-img h2 {
+        left: calc(10.5vw - 35px);
+        top: 6.5vw;
+    }
+
+    div.nav-img {
+        width: 75vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    div.nav-img img {
+        width: 21vw;
+        height: 14vw;
+    }
 }
 
 @media screen and (min-width: 1920px) {
@@ -378,7 +405,7 @@ div.chart-container {
     }
 
     /* Main */
-    main {
+    main.stocks {
         display: grid;
         grid-template-columns: 1fr 1fr;
         align-items: center;
