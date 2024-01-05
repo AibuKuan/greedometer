@@ -248,6 +248,14 @@ span.comp-var {
     margin-bottom: 1rem;
 }
 
+.pos-color {
+    color: #6CDF44;
+}
+
+.neg-color {
+    color: #DF4444;
+}
+
 /* Chart */
 div.chart-type-button {
     display: flex;

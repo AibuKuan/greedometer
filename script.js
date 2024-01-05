@@ -1,7 +1,7 @@
 const urlParam = new URLSearchParams(window.location.search);
 const symbol = urlParam.get('symbol');
 
-if (symbol) createChart(symbol);
+if (symbol) displayData(symbol);
 
 $('#searchbar').on('focus', function() {
     $('form div').addClass('active');
@@ -30,10 +30,13 @@ $('#searchbar').on('blur', function() {
 
 $('#searchbar-form').on('submit', function(event) {
     event.preventDefault();
-    createChart($('#searchbar').val());
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.delete('symbol');
+    history.pushState({}, '', currentUrl.toString());
+    displayData($('#searchbar').val());
 });
 
-function createChart(symbol) {
+function displayData(symbol) {
     console.log('You entered ' + symbol);
 
     const url = 'https://yahoo-finance127.p.rapidapi.com/search/' + symbol;
@@ -81,9 +84,11 @@ function createChart(symbol) {
 
                 let marketChange, marketChangePercent;
                 if (change === '-') {
+                    loadChart($('#price-change').addClass('neg-color'));
                     marketChange = response['regularMarketChange']['fmt'].substring(1)
                     marketChangePercent = response['regularMarketChangePercent']['fmt'].substring(1)
                 } else {
+                    loadChart($('#price-change').addClass('pos-color'));
                     marketChange = response['regularMarketChange']['fmt'];
                     marketChangePercent = response['regularMarketChangePercent']['fmt'];
                 }
