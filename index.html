@@ -37,31 +37,31 @@
                 <th></th>
                 <th style="text-align: left">Company name</th>
             </tr>
-            <tr>
-                <th>AAPL</th>
-                <td>Apple Inc</td>
+            <tr class="row-link" data-href="stocks.html?symbol=AAPL">
+                <a href="google.com"><th>AAPL</th>
+                <td>Apple Inc</td></a>
             </tr>
-            <tr>
+            <tr class="row-link" data-href="stocks.html?symbol=AMZN">
                 <th>AMZN</th>
                 <td>Amazon.com Inc</td>
             </tr>
-            <tr>
+            <tr class="row-link" data-href="stocks.html?symbol=GOOGL">
                 <th>GOOGL</th>
                 <td>Alphabet Inc Class A</td>
             </tr>
-            <tr>
+            <tr class="row-link" data-href="stocks.html?symbol=META">
                 <th>META</th>
                 <td>Meta Platforms Inc</td>
             </tr>
-            <tr>
+            <tr class="row-link" data-href="stocks.html?symbol=MSFT">
                 <th>MSFT</th>
                 <td>Microsoft Corp</td>
             </tr>
-            <tr>
+            <tr class="row-link" data-href="stocks.html?symbol=NFLX">
                 <th>NFLX</th>
                 <td>Netflix Inc</td>
             </tr>
-            <tr>
+            <tr class="row-link" data-href="stocks.html?symbol=TSLA">
                 <th>TSLA</th>
                 <td>Tesla Inc</td>
             </tr>
@@ -75,6 +75,7 @@
         const stocksImg = document.querySelector('#stocks-container img');
         const cryptoImg = document.querySelector('#crypto-container img');
         const forexImg = document.querySelector('#forex-container img');
+        const rowLinks = document.querySelectorAll('.row-link');
 
         stocksCont.addEventListener('mouseover', () => {
             stocksImg.classList.add('img-active');
@@ -101,6 +102,12 @@
         forexImg.addEventListener('mouseout', () => {
             forexImg.classList.remove('img-active');
         });
+
+        for (rowLink of rowLinks) {
+            rowLink.addEventListener('click', function() {
+                location.href = this.getAttribute('data-href');
+            });
+        }
     </script>
 
     <script src="script.js"></script>
