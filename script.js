@@ -1,6 +1,7 @@
-// $('#searchbar').on('input', function() {
-//     console.log('change');
-// });
+const urlParam = new URLSearchParams(window.location.search);
+const symbol = urlParam.get('symbol');
+
+if (symbol) createChart(symbol);
 
 $('#searchbar').on('focus', function() {
     $('form div').addClass('active');
@@ -29,7 +30,10 @@ $('#searchbar').on('blur', function() {
 
 $('#searchbar-form').on('submit', function(event) {
     event.preventDefault();
-    const symbol = $('#searchbar').val();
+    createChart($('#searchbar').val());
+});
+
+function createChart(symbol) {
     console.log('You entered ' + symbol);
 
     const url = 'https://yahoo-finance127.p.rapidapi.com/search/' + symbol;
@@ -90,12 +94,10 @@ $('#searchbar-form').on('submit', function(event) {
             });
         } else {
             console.log('Company not found');
-            alert('Company not foudn');
+            alert('Company not found');
         }
-
-        
     });
-});
+}
 
 function loadChart(symbol) {
     const settings = {
