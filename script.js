@@ -1,5 +1,6 @@
 const urlParam = new URLSearchParams(window.location.search);
 const symbol = urlParam.get('symbol');
+let apiResponse;
 
 if (symbol) displayData(symbol);
 
@@ -22,6 +23,12 @@ $('#searchbar').on('focus', function() {
     
 });
 
+$('#searchbar').keypress(
+    function(event) {
+        if (event.which === 13) $(this).blur();
+    }
+);
+
 $('#searchbar').on('blur', function() {
     $('#searchbar').attr('placeholder', 'Search');
     $('.recom').empty();
@@ -33,6 +40,7 @@ $('#searchbar-form').on('submit', function(event) {
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.delete('symbol');
     history.pushState({}, '', currentUrl.toString());
+    $('.timeseries').prop('disabled', true);
     displayData($('#searchbar').val());
 });
 
@@ -104,6 +112,22 @@ function displayData(symbol) {
     });
 }
 
+function convTime(array) {
+    return array.map(function(timestamp) {
+        const date = new Date(timestamp * 1000);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    });
+}
+
+function convPrices(array) { 
+    return array.map(function(price) { 
+        return price.toFixed(2);
+    });
+}
+
 function loadChart(symbol) {
     const settings = {
         async: true,
@@ -119,20 +143,9 @@ function loadChart(symbol) {
     $.ajax(settings)
         .done(function (response) {
             console.log(response);
-            function convPrices(array) { 
-                return array.map(function(price) { 
-                    return price.toFixed(2);
-                });
-            }
-            function convTime(array) {
-                return array.map(function(timestamp) {
-                    const date = new Date(timestamp * 1000);
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    return `${year}-${month}-${day}`;
-                });
-            }
+            apiResponse = response;
+            
+            
             function minMaxDate(array) {
                 const minDate = new Date(Math.min(...array) * 1000);
                 const maxDate = new Date(Math.max(...array) * 1000);
@@ -178,20 +191,34 @@ function loadChart(symbol) {
                     rangeselector: { buttons: [
                         {
                             count: 7,
-                            label: '1w',
+                            label: '1 week',
                             step: 'day'
                         },
                         {
                             count: 1,
-                            label: '1m',
+                            label: '1 month',
+                            step: 'month'
+                        },
+                        {
+                            count: 3,
+                            label: '3 months',
                             step: 'month'
                         },
                         {
                             count: 6,
-                            label: '6m',
+                            label: '6 months',
                             step: 'month'
                         },
-                        {step: 'all'}
+                        {
+                            count: 1,
+                            label: '1 year',
+                            step: 'year'
+                        },
+                        {
+                            count: 3,
+                            label: '3 years',
+                            step: 'year'
+                        }
                     ]},
                     rangeslider: {range: minMaxDate(response['timestamp'])},
                     type: 'date',
@@ -239,7 +266,123 @@ function loadChart(symbol) {
    
 }
 
+function currentAndLastWeek(timestamp) {
+    timestampWeekAgo = timestamp - 604800;
+    const dateToday = new Date(timestamp * 1000);
+    const dateWeekAgo = new Date(timestampWeekAgo * 1000);
 
+    const yearToday = dateToday.getFullYear();
+    const yearWeekAgo = dateWeekAgo.getFullYear();
+
+    const monthToday = String(dateToday.getMonth() + 1).padStart(2, '0');
+    const monthWeekAgo = String(dateWeekAgo.getMonth() + 1).padStart(2, '0');
+
+    const dayToday = String(dateToday.getDate()).padStart(2, '0');
+    const dayWeekAgo = String(dateWeekAgo.getDate()).padStart(2, '0');
+    
+    return [`${yearWeekAgo}-${monthWeekAgo}-${dayWeekAgo}`, `${yearToday}-${monthToday}-${dayToday}`];
+}
+
+$('.candlestick').on('click', function() {
+    const trace = {
+        x: convTime(apiResponse['timestamp']),
+
+        close: convPrices(apiResponse['indicators']['quote'][0]['close']),
+        high: convPrices(apiResponse['indicators']['quote'][0]['high']),
+        low: convPrices(apiResponse['indicators']['quote'][0]['low']),
+        open: convPrices(apiResponse['indicators']['quote'][0]['open']),
+
+        decreasing: {line: {color: '#DF4444'}},
+        increasing: {line: {color: '#6CDF44'}},
+        line: {color: 'gray'},
+
+        type: 'candlestick',
+        xaxis: 'x',
+        yaxis: 'y'
+    }
+
+    const data = [trace];
+
+    const layout = {
+        title: `${apiResponse['meta']['symbol']} Price`,
+        titlefont: {
+            color: 'hsl(0, 0%, 90%)'
+        },
+        dragmode: 'zoom',
+        xaxis: {
+            autorange: false,
+            domain: [0, 1],
+            // range: currentAndLastWeek(apiResponse['timestamp'][apiResponse['timestamp'].length - 1]),
+            rangeslider: {
+                visible: false
+            },
+            rangeselector: { buttons: [
+                {
+                    count: 7,
+                    label: '1 week',
+                    step: 'day'
+                },
+                {
+                    count: 1,
+                    label: '1 month',
+                    step: 'month'
+                },
+                {
+                    count: 3,
+                    label: '3 months',
+                    step: 'month'
+                },
+                {
+                    count: 6,
+                    label: '6 months',
+                    step: 'month'
+                },
+                {
+                    count: 1,
+                    label: '1 year',
+                    step: 'year'
+                },
+                {
+                    count: 3,
+                    label: '3 years',
+                    step: 'year'
+                }
+            ]},
+            title: 'Date',
+            type: 'date',
+            gridcolor: 'hsl(0, 0%, 50%)',
+            minorgridcolor: 'hsl(0, 0%, 50%)',
+            tickfont: {
+                color: 'hsl(0, 0%, 90%)'
+            }
+        },
+        yaxis: {
+            autorange: true,
+            domain: [0, 1],
+            type: 'linear',
+            gridcolor: 'hsl(0, 0%, 50%)',
+            minorgridcolor: 'hsl(0, 0%, 50%)',
+            tickfont: {
+                color: 'hsl(0, 0%, 90%)'
+            }
+        },
+        autosize: true,
+        plot_bgcolor: 'hsl(0, 0%, 10%)',
+        paper_bgcolor: 'hsl(0, 0%, 10%)',
+        dragmode: 'pan'
+    };
+    
+    const config = {
+        scrollZoom: true,
+        responsive: true,
+        displaylogo: false,
+        modeBarButtonsToRemove: ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'toImage']
+    }
+
+    Plotly.newPlot('chart', data, layout, config);
+    $('.timeseries').prop('disabled', false);
+    $('.candlestick').prop('disabled', true);
+});
 
 
 

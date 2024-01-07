@@ -265,11 +265,18 @@ div.chart-type-button {
 }
 
 div.chart-type-button button {
-    background: white;
+    background: var(--link-color);
+    color: var(--light-color);
+    cursor: pointer;
     border: none;
     outline: none;
     border-radius: 4px;
     padding: 0 10px;
+}
+
+div.chart-type-button button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed; 
 }
 
 div.chart-container {
