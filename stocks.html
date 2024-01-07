@@ -42,13 +42,13 @@
     </header>
     <main class='stocks'>
         <div>
-            <span class="comp-var" id="comp-name">Apple Inc. Common Stock (AAPL)</span>
+            <span class="comp-var" id="comp-name">No Company Selected</span>
             <h2>Market Cap</h2>
-            <span class="comp-var" id="market-cap">$1,000,000,000</span>
+            <span class="comp-var" id="market-cap">N/a</span>
             <h2>Current Price</h2>
-            <span class="comp-var" id="price">$1,000</span>
+            <span class="comp-var" id="price">N/a</span>
             <h2>Price Change Today</h2>
-            <span class="comp-var" id="price-change">+$500 (+100%)</span>
+            <span class="comp-var" id="price-change">N/a</span>
         </div>
         <div>
             <div class="chart-type-button">
@@ -64,94 +64,94 @@
 
     <script src="script.js"></script>
     <script>
-        d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv', function(err, rows) {
-            if (err) console.error('Error loading CSV:', err);
-            function unpack(rows, key) { return rows.map(function(row) { return row[key]; }); }
+        // d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv', function(err, rows) {
+        //     if (err) console.error('Error loading CSV:', err);
+        //     function unpack(rows, key) { return rows.map(function(row) { return row[key]; }); }
             
-            let trace1 = {
-                type: 'scatter',
-                mode: 'lines',
-                name: 'AAPL High',
-                x: unpack(rows, 'Date'),
-                y: unpack(rows, 'AAPL.High'),
-                line: {color: 'rgb(51, 166, 159)'}
-            }
+        //     let trace1 = {
+        //         type: 'scatter',
+        //         mode: 'lines',
+        //         name: 'AAPL High',
+        //         x: unpack(rows, 'Date'),
+        //         y: unpack(rows, 'AAPL.High'),
+        //         line: {color: 'rgb(51, 166, 159)'}
+        //     }
 
-            let trace2 = {
-                type: 'scatter',
-                mode: 'lines',
-                name: 'AAPL Low',
-                x: unpack(rows, 'Date'),
-                y: unpack(rows, 'AAPL.Low'),
-                line: {color: 'rgb(234, 89, 81)'}
-            }
+        //     let trace2 = {
+        //         type: 'scatter',
+        //         mode: 'lines',
+        //         name: 'AAPL Low',
+        //         x: unpack(rows, 'Date'),
+        //         y: unpack(rows, 'AAPL.Low'),
+        //         line: {color: 'rgb(234, 89, 81)'}
+        //     }
 
-            let data = [trace1, trace2];
+        //     let data = [trace1, trace2];
 
-            let layout = {
-                title: 'Time Series with Rangeslider',
-                titlefont: {
-                    color: 'hsl(0, 0%, 90%)'
-                },
-                xaxis: {
-                    autorange: true,
-                    range: ['2015-07-01', '2017-12-31'],
-                    rangeselector: { buttons: [
-                        {
-                            count: 7,
-                            label: '1w',
-                            step: 'day'
-                        },
-                        {
-                            count: 1,
-                            label: '1m',
-                            step: 'month'
-                        },
-                        {
-                            count: 6,
-                            label: '6m',
-                            step: 'month'
-                        },
-                        {step: 'all'}
-                    ]},
-                    rangeslider: {range: ['2015-02-17', '2017-02-16']},
-                    type: 'date',
-                    gridcolor: 'hsl(0, 0%, 50%)',
-                    minorgridcolor: 'hsl(0, 0%, 50%)',
-                    tickfont: {
-                        color: 'hsl(0, 0%, 90%)'
-                    }
-                },
-                yaxis: {
-                    autorange: true,
-                    range: [86.8700008333, 138.870004167],
-                    type: 'linear',
-                    gridcolor: 'hsl(0, 0%, 50%)',
-                    minorgridcolor: 'hsl(0, 0%, 50%)',
-                    tickfont: {
-                        color: 'hsl(0, 0%, 90%)'
-                    }
-                },
-                legend: {
-                    font: {
-                        color: 'hsl(0, 0%, 90%)'
-                    }
-                },
-                autosize: true,
-                plot_bgcolor: 'hsl(0, 0%, 10%)',
-                paper_bgcolor: 'hsl(0, 0%, 10%)',
-                dragmode: 'pan'
-                // plot_bgcolor: '#1b263b'
-            };
+        //     let layout = {
+        //         title: 'Time Series with Rangeslider',
+        //         titlefont: {
+        //             color: 'hsl(0, 0%, 90%)'
+        //         },
+        //         xaxis: {
+        //             autorange: true,
+        //             range: ['2015-07-01', '2017-12-31'],
+        //             rangeselector: { buttons: [
+        //                 {
+        //                     count: 7,
+        //                     label: '1w',
+        //                     step: 'day'
+        //                 },
+        //                 {
+        //                     count: 1,
+        //                     label: '1m',
+        //                     step: 'month'
+        //                 },
+        //                 {
+        //                     count: 6,
+        //                     label: '6m',
+        //                     step: 'month'
+        //                 },
+        //                 {step: 'all'}
+        //             ]},
+        //             rangeslider: {range: ['2015-02-17', '2017-02-16']},
+        //             type: 'date',
+        //             gridcolor: 'hsl(0, 0%, 50%)',
+        //             minorgridcolor: 'hsl(0, 0%, 50%)',
+        //             tickfont: {
+        //                 color: 'hsl(0, 0%, 90%)'
+        //             }
+        //         },
+        //         yaxis: {
+        //             autorange: true,
+        //             range: [86.8700008333, 138.870004167],
+        //             type: 'linear',
+        //             gridcolor: 'hsl(0, 0%, 50%)',
+        //             minorgridcolor: 'hsl(0, 0%, 50%)',
+        //             tickfont: {
+        //                 color: 'hsl(0, 0%, 90%)'
+        //             }
+        //         },
+        //         legend: {
+        //             font: {
+        //                 color: 'hsl(0, 0%, 90%)'
+        //             }
+        //         },
+        //         autosize: true,
+        //         plot_bgcolor: 'hsl(0, 0%, 10%)',
+        //         paper_bgcolor: 'hsl(0, 0%, 10%)',
+        //         dragmode: 'pan'
+        //         // plot_bgcolor: '#1b263b'
+        //     };
 
-            let config = {
-                responsive: true,
-                displaylogo: false,
-                modeBarButtonsToRemove: ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'toImage']
-            }
+        //     let config = {
+        //         responsive: true,
+        //         displaylogo: false,
+        //         modeBarButtonsToRemove: ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'toImage']
+        //     }
 
-            Plotly.newPlot('chart', data, layout, config);
-        });
+        //     Plotly.newPlot('chart', data, layout, config);
+        // });
     </script>
 </body>
 </html>
