@@ -72,36 +72,18 @@
         const stocksCont = document.querySelector('#stocks-container');
         const cryptoCont = document.querySelector('#crypto-container');
         const forexCont = document.querySelector('#forex-container');
-        const stocksImg = document.querySelector('#stocks-container img');
-        const cryptoImg = document.querySelector('#crypto-container img');
-        const forexImg = document.querySelector('#forex-container img');
         const rowLinks = document.querySelectorAll('.row-link');
 
-        stocksCont.addEventListener('mouseover', () => {
-            stocksImg.classList.add('img-active');
-            console.log('Hello');
-        });
+        const navContArray = [stocksCont, cryptoCont, forexCont];
 
-        cryptoCont.addEventListener('mouseover', () => {
-            cryptoImg.classList.add('img-active');
-        });
-
-        forexCont.addEventListener('mouseover', () => {
-            forexImg.classList.add('img-active');
-        });
-
-        stocksImg.addEventListener('mouseout', () => {
-            stocksImg.classList.remove('img-active');
-            console.log('Hello');
-        });
-
-        cryptoImg.addEventListener('mouseout', () => {
-            cryptoImg.classList.remove('img-active');
-        });
-
-        forexImg.addEventListener('mouseout', () => {
-            forexImg.classList.remove('img-active');
-        });
+        for (const container of navContArray) {
+            container.addEventListener('mouseover', () => {
+                container.querySelector('img').classList.add('img-active');
+            });
+            container.addEventListener('mouseout', () => {
+                container.querySelector('img').classList.remove('img-active');
+            })
+        }
 
         for (rowLink of rowLinks) {
             rowLink.addEventListener('click', function() {
