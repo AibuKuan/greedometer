@@ -4,7 +4,7 @@ const symbol = urlParam.get('symbol');
 
 let apiResponse; // contains the fetched data
 
-if (symbol) displayData(symbol); // displays the data if there is a url param
+if (symbol) fetchAndDisplay(symbol); // displays the data if there is a url param
 
 // create the recommendation element and text
 let recomArray = [];
@@ -49,7 +49,12 @@ $('#searchbar-form').on('submit', function(event) {
     currentUrl.searchParams.delete('symbol');
     history.pushState({}, '', currentUrl.toString());
 
-    fetchInfo($('#searchbar').val())
+    fetchAndDisplay($('#searchbar').val());
+    
+});
+
+function fetchAndDisplay(symbol) {
+    fetchInfo(symbol)
         .done(function (response) {
             console.log(response);
             displayInfo(response);
@@ -61,7 +66,7 @@ $('#searchbar-form').on('submit', function(event) {
             console.log(errorThrown);
         });
 
-    fetchChartData($('#searchbar').val())
+    fetchChartData(symbol)
         .done(function (response) {
             console.log(response);
             apiResponse = response; // stores the result into a global variable
@@ -73,9 +78,7 @@ $('#searchbar-form').on('submit', function(event) {
             console.log(textStatus);
             console.log(errorThrown);
         });
-
-    
-});
+}
 
 // fetches the company info
 function fetchInfo(symbol) {
