@@ -90,7 +90,8 @@ function fetchInfo(symbol) {
         url: url,
         method: 'GET',
         headers: {
-            'X-RapidAPI-Key': 'eae20b108bmsh050c0ab157af07dp151d0cjsnf5efc3f2615f',
+            // this is just a free tier api, so it doesn't matter if you can see it
+            'X-RapidAPI-Key': '14d0d6a18amsh097ab9d54baa168p1ecaa3jsn830233c5b28f',
             'X-RapidAPI-Host': 'yahoo-finance127.p.rapidapi.com'
         }
     };
@@ -130,7 +131,8 @@ function fetchChartData(symbol) {
         url: `https://yahoo-finance127.p.rapidapi.com/historic/${symbol}/1d/3y`,
         method: 'GET',
         headers: {
-            'X-RapidAPI-Key': 'eae20b108bmsh050c0ab157af07dp151d0cjsnf5efc3f2615f',
+            // this is just a free tier api, so it doesn't matter if you can see it
+            'X-RapidAPI-Key': '14d0d6a18amsh097ab9d54baa168p1ecaa3jsn830233c5b28f',
             'X-RapidAPI-Host': 'yahoo-finance127.p.rapidapi.com'
         }
     };
