@@ -27,39 +27,17 @@ $('#searchbar').on('focus', function() {
     $('form div').addClass('active');
     
     $('#searchbar').attr('placeholder', 'Search ticker symbol');
-    // const recom1 = $('<div></div>');
-    // const recom2 = $('<div></div>');
-
-    // recom1.text('AAPL (Apple Inc. Common Stock)');
-    // recom2.text('MSFT (Microsoft Corporation)');
-
-    // recom1.addClass('search');
-    // recom2.addClass('search');
-
-    // $('.recom').append(recom1);
-    // $('.recom').append(recom2);
 
     for (recom of recomArray) $('.recom').append(recom);
 });
 
 $('#searchbar').on('blur', function() {
-    
-
-    if (!$(document.activeElement).hasClass('search')) {
-        setTimeout(function() {
-            $('#searchbar').attr('placeholder', 'Search');
-            $('form div').removeClass('active');
-            $('.recom').empty();
-        }, 150);
-    } 
-    // setTimeout(function() {
-    //     if (!$(document.activeElement).hasClass('search')) {
-    //         // If the focus is not on a recommendation, remove recommendations and 'active' class
-    //         $('#searchbar').attr('placeholder', 'Search');
-    //         $('.recom').empty();
-    //         $('form div').removeClass('active');
-    //     }
-    // }, 150);
+    // delay the dissapearance to buy time for the event listener of recom
+    setTimeout(function() {
+        $('#searchbar').attr('placeholder', 'Search');
+        $('form div').removeClass('active');
+        $('.recom').empty();
+    }, 150);
 });
 
 $('#searchbar-form').on('submit', function(event) {
