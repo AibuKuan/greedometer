@@ -23,13 +23,6 @@ $('#searchbar').on('focus', function() {
     $('.recom').append(recom2);
 });
 
-// unfocus the searchbar when enter key is pressed
-// $('#searchbar').keypress(
-//     function(event) {
-//         if (event.which === 13) $(this).blur();
-//     }
-// );
-
 $('#searchbar').on('blur', function() {
     $('#searchbar').attr('placeholder', 'Search');
     $('.recom').empty();
@@ -45,11 +38,32 @@ $('#searchbar-form').on('submit', function(event) {
     currentUrl.searchParams.delete('symbol');
     history.pushState({}, '', currentUrl.toString());
 
-    const fetchedInfo = fetchInfo($('#searchbar').val());
-    displayInfo(fetchedInfo);
+    fetchInfo($('#searchbar').val())
+        .done(function (response) {
+            console.log(response);
+            displayInfo(response);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            alert('Couldn\'t retrieve company data!');
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        });
 
-    apiResponse = fetchChartData($('#searchbar').val()); // stores the result into a global variable
-    generateTimeSeries();
+    fetchChartData($('#searchbar').val())
+        .done(function (response) {
+            console.log(response);
+            apiResponse = response; // stores the result into a global variable
+            generateTimeSeries();
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            alert('Couldn\'t retrieve chart data!');
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        });
+
+    
 });
 
 // fetches the company info
@@ -67,15 +81,12 @@ function fetchInfo(symbol) {
         }
     };
     
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-        return response;
-    });
+    return $.ajax(settings);
 }
 
 // displays the company info
 function displayInfo(compInfo) {
-    $('#comp-name').text(compInfo['quotes'][0]['longname'] + ' (' + compInfo['quotes'][0]['symbol'] + ')'); // not fixed
+    $('#comp-name').text(compInfo['longName'] + ' (' + compInfo['symbol'] + ')'); // not fixed
 
     $('#market-cap').text('$' + compInfo['marketCap']['longFmt'] + ' (' + compInfo['marketCap']['fmt'] + ')');
     $('#price').text('$' + compInfo['regularMarketPrice']['fmt']);
@@ -86,11 +97,11 @@ function displayInfo(compInfo) {
 
     let marketChange, marketChangePercent;
     if (change === '-') {
-        loadChart($('#price-change').addClass('neg-color'));
+        $('#price-change').addClass('neg-color');
         marketChange = compInfo['regularMarketChange']['fmt'].substring(1)
         marketChangePercent = compInfo['regularMarketChangePercent']['fmt'].substring(1)
     } else {
-        loadChart($('#price-change').addClass('pos-color'));
+        $('#price-change').addClass('pos-color');
         marketChange = compInfo['regularMarketChange']['fmt'];
         marketChangePercent = compInfo['regularMarketChangePercent']['fmt'];
     }
@@ -110,19 +121,7 @@ function fetchChartData(symbol) {
         }
     };
     
-    $.ajax(settings)
-        .done(function (response) {
-            console.log(response);
-            apiResponse = response;
-
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            alert('Couldn\'t retrieve chart data!');
-            console.log(jqXHR);
-            console.log(textStatus);
-            console.log(errorThrown);
-        });
-   
+    return $.ajax(settings);
 }
 
 function generateTimeSeries() {
@@ -377,92 +376,3 @@ $('.timeseries').on('click', function() {
 
 
 
-
-// d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv', function(err, rows) {
-//             if (err) console.error('Error loading CSV:', err);
-//             function unpack(rows, key) { return rows.map(function(row) { return row[key]; }); }
-            
-//             let trace1 = {
-//                 type: 'scatter',
-//                 mode: 'lines',
-//                 name: 'AAPL High',
-//                 x: unpack(rows, 'Date'),
-//                 y: unpack(rows, 'AAPL.High'),
-//                 line: {color: 'green'}
-//             }
-
-//             let trace2 = {
-//                 type: 'scatter',
-//                 mode: 'lines',
-//                 name: 'AAPL Low',
-//                 x: unpack(rows, 'Date'),
-//                 y: unpack(rows, 'AAPL.Low'),
-//                 line: {color: 'red'}
-//             }
-
-//             let data = [trace1, trace2];
-
-//             let layout = {
-//                 title: 'Time Series with Rangeslider',
-//                 titlefont: {
-//                     color: 'hsl(0, 0%, 90%)'
-//                 },
-//                 xaxis: {
-//                     autorange: true,
-//                     range: ['2015-07-01', '2017-12-31'],
-//                     rangeselector: { buttons: [
-//                         {
-//                             count: 7,
-//                             label: '1w',
-//                             step: 'day'
-//                         },
-//                         {
-//                             count: 1,
-//                             label: '1m',
-//                             step: 'month'
-//                         },
-//                         {
-//                             count: 6,
-//                             label: '6m',
-//                             step: 'month'
-//                         },
-//                         {step: 'all'}
-//                     ]},
-//                     rangeslider: {range: ['2015-02-17', '2017-02-16']},
-//                     type: 'date',
-//                     gridcolor: 'hsl(0, 0%, 50%)',
-//                     minorgridcolor: 'hsl(0, 0%, 50%)',
-//                     tickfont: {
-//                         color: 'hsl(0, 0%, 90%)'
-//                     }
-//                 },
-//                 yaxis: {
-//                     autorange: true,
-//                     range: [86.8700008333, 138.870004167],
-//                     type: 'linear',
-//                     gridcolor: 'hsl(0, 0%, 50%)',
-//                     minorgridcolor: 'hsl(0, 0%, 50%)',
-//                     tickfont: {
-//                         color: 'hsl(0, 0%, 90%)'
-//                     }
-//                 },
-//                 legend: {
-//                     font: {
-//                         color: 'hsl(0, 0%, 90%)'
-//                     }
-//                 },
-//                 autosize: true,
-//                 plot_bgcolor: 'hsl(0, 0%, 10%)',
-//                 paper_bgcolor: 'hsl(0, 0%, 10%)',
-//                 dragmode: 'pan'
-//                 // plot_bgcolor: '#1b263b'
-//             };
-
-//             let config = {
-//                 responsive: true,
-//                 displaylogo: false,
-//                 modeBarButtonsToRemove: ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'toImage']
-//             }
-
-//             Plotly.newPlot('chart', data, layout, config);
-//         });
