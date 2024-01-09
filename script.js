@@ -6,27 +6,60 @@ let apiResponse; // contains the fetched data
 
 if (symbol) displayData(symbol); // displays the data if there is a url param
 
+// create the recommendation element and text
+let recomArray = [];
+for (let i = 0; i < 7; i++) {
+    recomArray[i] = $('<div></div>')
+        .addClass('search')
+        .on('click', function() {
+            $('#searchbar').val(this.getAttribute('data-symbol'));
+        });
+}
+recomArray[0].text('AAPL (Apple Inc)').attr('data-symbol', 'aapl');
+recomArray[1].text('AMZN (Amazon.com Inc)').attr('data-symbol', 'amzn');
+recomArray[2].text('GOOGL (Alphabet Inc Class A)').attr('data-symbol', 'googl');
+recomArray[3].text('META (Meta Platforms Inc)').attr('data-symbol', 'meta');
+recomArray[4].text('MSFT (Microsoft Corp)').attr('data-symbol', 'msft');
+recomArray[5].text('NFLX (Netflix Inc)').attr('data-symbol', 'nflx');
+recomArray[6].text('TSLA (Tesla Inc)').attr('data-symbol', 'tsla');
+
 $('#searchbar').on('focus', function() {
     $('form div').addClass('active');
     
     $('#searchbar').attr('placeholder', 'Search ticker symbol');
-    const recom1 = $('<div></div>');
-    const recom2 = $('<div></div>');
+    // const recom1 = $('<div></div>');
+    // const recom2 = $('<div></div>');
 
-    recom1.text('AAPL (Apple Inc. Common Stock)');
-    recom2.text('MSFT (Microsoft Corporation)');
+    // recom1.text('AAPL (Apple Inc. Common Stock)');
+    // recom2.text('MSFT (Microsoft Corporation)');
 
-    recom1.addClass('search');
-    recom2.addClass('search');
+    // recom1.addClass('search');
+    // recom2.addClass('search');
 
-    $('.recom').append(recom1);
-    $('.recom').append(recom2);
+    // $('.recom').append(recom1);
+    // $('.recom').append(recom2);
+
+    for (recom of recomArray) $('.recom').append(recom);
 });
 
 $('#searchbar').on('blur', function() {
-    $('#searchbar').attr('placeholder', 'Search');
-    $('.recom').empty();
-    $('form div').removeClass('active');
+    
+
+    if (!$(document.activeElement).hasClass('search')) {
+        setTimeout(function() {
+            $('#searchbar').attr('placeholder', 'Search');
+            $('form div').removeClass('active');
+            $('.recom').empty();
+        }, 150);
+    } 
+    // setTimeout(function() {
+    //     if (!$(document.activeElement).hasClass('search')) {
+    //         // If the focus is not on a recommendation, remove recommendations and 'active' class
+    //         $('#searchbar').attr('placeholder', 'Search');
+    //         $('.recom').empty();
+    //         $('form div').removeClass('active');
+    //     }
+    // }, 150);
 });
 
 $('#searchbar-form').on('submit', function(event) {
@@ -251,7 +284,7 @@ function generateCandlestick() {
         xaxis: {
             autorange: false,
             domain: [0, 1],
-            // range: currentAndLastWeek(apiResponse['timestamp'][apiResponse['timestamp'].length - 1]),
+            range: minMaxDate(apiResponse['timestamp']),
             rangeslider: {
                 visible: false
             },
@@ -287,7 +320,6 @@ function generateCandlestick() {
                     step: 'year'
                 }
             ]},
-            title: 'Date',
             type: 'date',
             gridcolor: 'hsl(0, 0%, 50%)',
             minorgridcolor: 'hsl(0, 0%, 50%)',
@@ -347,23 +379,6 @@ function minMaxDate(array) {
     const maxDateString = `${maxDate.getFullYear()}-${String(maxDate.getMonth() + 1).padStart(2, '0')}-${String(maxDate.getDate()).padStart(2, '0')}`;
 
     return Array(minDateString, maxDateString);
-}
-
-function currentAndLastWeek(timestamp) {
-    timestampWeekAgo = timestamp - 604800;
-    const dateToday = new Date(timestamp * 1000);
-    const dateWeekAgo = new Date(timestampWeekAgo * 1000);
-
-    const yearToday = dateToday.getFullYear();
-    const yearWeekAgo = dateWeekAgo.getFullYear();
-
-    const monthToday = String(dateToday.getMonth() + 1).padStart(2, '0');
-    const monthWeekAgo = String(dateWeekAgo.getMonth() + 1).padStart(2, '0');
-
-    const dayToday = String(dateToday.getDate()).padStart(2, '0');
-    const dayWeekAgo = String(dateWeekAgo.getDate()).padStart(2, '0');
-    
-    return [`${yearWeekAgo}-${monthWeekAgo}-${dayWeekAgo}`, `${yearToday}-${monthToday}-${dayToday}`];
 }
 
 $('.candlestick').on('click', function() {
